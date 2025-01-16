@@ -1,0 +1,44 @@
+stages:
+  
+  data_loader:
+    cmd: python src/data/data_loader.py
+    outs:
+      - data/raw/data.csv
+  
+  data_preprocess:
+    cmd: python src/data/preprocess.py
+    deps:
+      - data/raw/data.csv
+    outs:
+      - data/preprocessed/processed_data.csv
+  
+  feature_engineering:
+    cmd: python src/data/feature_engineering.py
+    deps:
+      - data/preprocessed/processed_data.csv
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  choosing_cluster:
+    cmd: python src/parameter_tuning.py
+    params:
+      - cluster_select
+    deps:
+      - params.yaml
+      - data/processed/train.csv
+    outs:
+      - hyperparameter_config.json
+  
+  training:
+    cmd: python src/train.py
+    params:
+      - training_params
+    deps:
+      - params.yaml
+      - hyperparameter_config.json
+      - data/processed/train.csv
+    outs:
+      - reports/metrics.json
+  evaluate:
+    cmd: python src/evaluate.py

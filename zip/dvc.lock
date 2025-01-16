@@ -1,0 +1,93 @@
+schema: '2.0'
+stages:
+  data_loader:
+    cmd: python src/data/data_loader.py
+    outs:
+    - path: data/raw/data.csv
+      hash: md5
+      md5: 5d295417e543b29d40366cd75fb4c75a
+      size: 45580638
+  data_preprocess:
+    cmd: python src/data/preprocess.py
+    deps:
+    - path: data/raw/data.csv
+      hash: md5
+      md5: 5d295417e543b29d40366cd75fb4c75a
+      size: 45580638
+    outs:
+    - path: data/preprocessed/processed_data.csv
+      hash: md5
+      md5: 4e8c1f210afa29fd7c807d7287fe9bba
+      size: 35436415
+  feature_engineering:
+    cmd: python src/data/feature_engineering.py
+    deps:
+    - path: data/preprocessed/processed_data.csv
+      hash: md5
+      md5: 4e8c1f210afa29fd7c807d7287fe9bba
+      size: 35436415
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 4167fc6a96d6bef56bec73d5b52220d8
+      size: 210540
+    - path: data/processed/train.csv
+      hash: md5
+      md5: a85673c46bfff2c578873ba70a784e76
+      size: 841370
+  choosing_cluster:
+    cmd: python src/parameter_tuning.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: a85673c46bfff2c578873ba70a784e76
+      size: 841370
+    - path: params.yaml
+      hash: md5
+      md5: 210fe53ec0310b3c8d2018218f2f3e3e
+      size: 295
+    params:
+      params.yaml:
+        cluster_select:
+          init: k-means++
+          max_iter: 100
+          random_state: 0
+          n_init: 10
+          k:
+          - 2
+          - 15
+    outs:
+    - path: hyperparameter_config.json
+      hash: md5
+      md5: 72de505754bc3b32398fd10990087dbd
+      size: 17
+  training:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: a85673c46bfff2c578873ba70a784e76
+      size: 841370
+    - path: hyperparameter_config.json
+      hash: md5
+      md5: 72de505754bc3b32398fd10990087dbd
+      size: 17
+    - path: params.yaml
+      hash: md5
+      md5: 210fe53ec0310b3c8d2018218f2f3e3e
+      size: 295
+    params:
+      params.yaml:
+        training_params:
+          init: k-means++
+          n_init: 10
+          max_iter: 100
+          random_state: 0
+          training_path: data/processed/train.csv
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 629020a4b3a012d91bbe2ed3e2bea0b1
+      size: 113
+  evaluate:
+    cmd: python src/evaluate.py

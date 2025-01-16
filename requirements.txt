@@ -1,0 +1,8 @@
+dvc
+scikit-learn
+pandas
+numpy
+apache-airflow
+yellowbrick
+mlflow
+seaborn

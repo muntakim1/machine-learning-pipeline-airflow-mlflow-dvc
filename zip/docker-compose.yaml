@@ -1,0 +1,11 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow
+    ports:
+      - 5000:5000
+  
+  ml_pipeline:
+    build: .
+    ports:
+      - 8080:8080
+    
