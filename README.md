@@ -104,7 +104,7 @@ airflow dags trigger ml_pipeline
 ## 💼 **Looking for Opportunities!**  
 I am actively **seeking Data Science roles** where I can leverage my expertise in **Machine Learning, MLOps, and Automation** to build **scalable AI solutions**.  
 
-📩 **Let’s connect!** [LinkedIn](https://www.linkedin.com/in/your-profile) | [Email](mailto:your.email@example.com)  
+📩 **Let’s connect!** [LinkedIn](https://www.linkedin.com/in/muntakim1) | [Email](mailto:muntakim.cse@gmail.com)  
 
 ---
 
