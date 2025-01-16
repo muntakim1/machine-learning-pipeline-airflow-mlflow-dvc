@@ -56,8 +56,8 @@ graph TD;
 
 ### **1️⃣ Clone Repository**  
 ```bash
-git clone https://github.com/yourusername/airflow-mlops-pipeline.git
-cd airflow-mlops-pipeline
+git clone https://github.com/muntakim1/machine-learning-pipeline-airflow-mlflow-dvc.git
+cd machine-learning-pipeline-airflow-mlflow-dvc
 ```
 
 ### **2️⃣ Install Dependencies**  
